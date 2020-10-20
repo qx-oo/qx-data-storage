@@ -7,6 +7,10 @@ my django project data storage module
 
 ### Usage:
 
+depends:
+
+    qx-base >= 1.0.8
+
 settings.py:
 
     INSTALLED_APPS = [
@@ -39,3 +43,12 @@ models.py:
             null=True, blank=True)
         
         ...
+
+Upload Image Model:
+
+    @register_upload_callback
+    class UploadImageStar(UploadModelImageCallbackMixin):
+        model = ImageStar
+        image_field = 'image'
+
+    router.register('upload-img', UploadImageViewset, basename="upload_image")
