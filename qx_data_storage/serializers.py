@@ -27,7 +27,7 @@ class OssImageSerializerMixin():
     def set_image(self, validated_data, image_field, unique_id):
         file_obj = self.parse_image(validated_data, image_field)
 
-        location = self.oss_location.rstrip('/')
+        location = self.oss_location.strip('/')
         obj_name = "{}/{}-{}".format(
             location, int(time.time() * 1000), unique_id)
 
@@ -57,7 +57,7 @@ class UploadImageSerializer(serializers.Serializer, OssImageSerializerMixin):
 
         file_obj = self.parse_image(validated_data, 'image')
 
-        location = instance.location.rstrip('/')
+        location = instance.location.strip('/')
         obj_name = "{}/{}-{}".format(
             location, int(time.time() * 1000), user.id)
         url = self.push_image(obj_name, file_obj)

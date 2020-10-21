@@ -39,7 +39,7 @@ class UploadModelImageCallbackMixin(UploadImageCallbackMixin):
     @property
     def location(self):
         location = getattr(self.model, self.image_field).field.storage.location
-        return location.lstrip('/')
+        return location
 
     @property
     def model(self):
