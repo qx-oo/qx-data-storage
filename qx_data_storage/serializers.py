@@ -64,6 +64,7 @@ class UploadImageSerializer(serializers.Serializer, OssImageSerializerMixin):
 
         status, msg = instance.upload_image_callback(url)
         if status:
+            validated_data['image'] = url
             return validated_data
         else:
             raise SerializerFieldError(msg, 'image')
