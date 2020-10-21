@@ -20,6 +20,17 @@ class OssImageSerializerMixin():
             raise SerializerFieldError("上传失败", 'image')
         return url
 
+    def set_image(self, validated_data, image_field, unique_id):
+        file_obj = self.parse_image(validated_data, image_field)
+
+        location = self.location.rstrip('/')
+        obj_name = "{}/{}-{}".format(
+            location, int(time.time() * 1000), unique_id)
+
+        url = self.push_image(obj_name, file_obj)
+        validated_data[image_field] = url
+        return url
+
 
 class UploadImageSerializer(serializers.Serializer, OssImageSerializerMixin):
 
