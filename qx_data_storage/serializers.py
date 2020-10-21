@@ -8,7 +8,7 @@ from .callbacks import callbacks
 
 class OssImageSerializerMixin():
     """
-    If use set_image, need set location.
+    If use set_image, need set oss_location.
     image_field: model image field.
     """
 
@@ -27,7 +27,7 @@ class OssImageSerializerMixin():
     def set_image(self, validated_data, image_field, unique_id):
         file_obj = self.parse_image(validated_data, image_field)
 
-        location = self.location.rstrip('/')
+        location = self.oss_location.rstrip('/')
         obj_name = "{}/{}-{}".format(
             location, int(time.time() * 1000), unique_id)
 
