@@ -101,6 +101,10 @@ def register_upload_callback(cls):
                 return True
     """
     if issubclass(cls, UploadImageCallbackMixin):
-        callbacks[cls.name] = cls
+        if isinstance(cls.name, str):
+            callbacks[cls.name] = cls
+        else:
+            raise Exception("{} name error".format(cls.__name__))
     else:
-        raise Exception("class need extend UploadImageCallbackMixin")
+        raise Exception(
+            "{} need extend UploadImageCallbackMixin".format(cls.__name__))

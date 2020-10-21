@@ -50,5 +50,6 @@ Upload Image Model:
     class UploadImageStar(UploadModelImageCallbackMixin):
         model = ImageStar
         image_field = 'image'
+        name = 'star_image'
 
     router.register('upload-img', UploadImageViewset, basename="upload_image")

@@ -28,3 +28,4 @@ class ImageStar(models.Model):
 class UploadImageStar(UploadModelImageCallbackMixin):
     model = ImageStar
     image_field = 'image'
+    name = 'star_image'

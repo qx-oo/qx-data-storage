@@ -20,10 +20,10 @@ class UploadImageViewset(viewsets.GenericViewSet,):
         IsAuthenticated,
     )
 
-    filterset_class = UploadImageSerializer
+    serializer_class = UploadImageSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+        serializer.save()
         return ApiResponse(data=request.data)
