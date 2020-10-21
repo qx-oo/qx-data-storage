@@ -31,6 +31,5 @@ class TestView:
             url, data=data,
             content_type='application/json')
         assert resp.status_code == 200
-        breakpoint()
         i_s = ImageStar.objects.get(id=i_star.id)
         assert i_s.image.url
