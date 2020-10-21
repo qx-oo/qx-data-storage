@@ -7,6 +7,10 @@ from .callbacks import callbacks
 
 
 class OssImageSerializerMixin():
+    """
+    If use set_image, need set location.
+    image_field: model image field.
+    """
 
     def parse_image(self, validated_data, image_field):
         img = validated_data[image_field]
