@@ -6,10 +6,6 @@ router = DefaultRouter()
 router.register('upload-img', viewsets.UploadImageViewset,
                 basename="upload_image")
 
-urlpatterns_api = [
-    path('', include(router.urls)),
-]
-
 urlpatterns = [
-    path('api/1.0/data-storage/', include(urlpatterns_api)),
+    path('', include(router.urls)),
 ]
