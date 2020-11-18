@@ -1,5 +1,6 @@
 import time
 import base64
+import binascii
 from rest_framework import serializers
 from qx_base.qx_rest.exceptions import SerializerFieldError
 from .oss import AutoOssStorage
@@ -25,13 +26,20 @@ class OssImageSerializerMixin():
         return url
 
     def set_image(self, validated_data, image_field, unique_id):
-        file_obj = self.parse_image(validated_data, image_field)
+        try:
+            file_obj = self.parse_image(validated_data, image_field)
+
+        except binascii.Error:
+            raise serializers.ValidationError("image parse error")
 
         location = self.oss_location.strip('/')
         obj_name = "{}/{}-{}".format(
             location, int(time.time() * 1000), unique_id)
 
-        url = self.push_image(obj_name, file_obj)
+        try:
+            url = self.push_image(obj_name, file_obj)
+        except Exception:
+            raise serializers.ValidationError("push oss fail")
         validated_data[image_field] = url
         return url
 
