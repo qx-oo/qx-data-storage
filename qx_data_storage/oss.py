@@ -1,13 +1,14 @@
 """
 Django Settings Config:
 
+    ALIYUN_ACCESS_KEY_ID = ''
+    ALIYUN_ACCESS_KEY_SECRET = ''
+
     QX_DATA_STORAGE_SETTINGS = {
         "ALIYUN_OSS": {
             "DOMAIN": "",
             "ENDPOINT": "",
             "BUCKET_NAME": "",
-            "ACCESS_KEY_ID": "",
-            "ACCESS_KEY_SECRET": "",
         },
     }
 """
@@ -31,9 +32,8 @@ class BackendOssStorage(OssStorage):
                  bucket_name=None,
                  path="/backend"):
         self.OSS = settings.QX_DATA_STORAGE_SETTINGS['ALIYUN_OSS']
-        access_key_id = access_key_id or self.OSS.get('ACCESS_KEY_ID')
-        access_key_secret = access_key_secret or self.OSS.get(
-            'ACCESS_KEY_SECRET')
+        access_key_id = access_key_id or settings.ALIYUN_ACCESS_KEY_ID
+        access_key_secret = access_key_secret or settings.ALIYUN_ACCESS_KEY_SECRET  # noqa
         end_point = end_point or self.OSS.get('ENDPOINT')
         bucket_name = bucket_name or self.OSS.get('BUCKET_NAME')
         self.location = path
@@ -76,9 +76,8 @@ class AutoOssStorage():
                  appsecret=None,
                  bucket_name=None):
         self.OSS = settings.QX_DATA_STORAGE_SETTINGS['ALIYUN_OSS']
-        appid = appid or self.OSS.get('ACCESS_KEY_ID')
-        appsecret = appsecret or self.OSS.get(
-            'ACCESS_KEY_SECRET')
+        appid = appid or settings.ALIYUN_ACCESS_KEY_ID
+        appsecret = appsecret or settings.ALIYUN_ACCESS_KEY_SECRET  # noqa
         bucket_name = bucket_name or self.OSS.get('BUCKET_NAME')
         auth = oss2.Auth(appid, appsecret)
         self.bucket = oss2.Bucket(

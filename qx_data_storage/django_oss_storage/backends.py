@@ -11,10 +11,10 @@ except ImportError:
 
 from datetime import datetime
 from django.core.files import File
-from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
+from django.core.exceptions import ImproperlyConfigured
 from django.core.files.storage import Storage
 from django.conf import settings
-from django.utils.encoding import force_text, force_bytes
+from django.utils.encoding import force_text
 from django.utils.deconstruct import deconstructible
 from django.utils.timezone import utc
 from tempfile import SpooledTemporaryFile
@@ -39,7 +39,8 @@ def _get_config(name):
 
 
 def _normalize_endpoint(endpoint):
-    if not endpoint.startswith('http://') and not endpoint.startswith('https://'):
+    if not endpoint.startswith('http://') and \
+            not endpoint.startswith('https://'):
         return 'https://' + endpoint
     else:
         return endpoint
@@ -59,11 +60,13 @@ class OssStorage(Storage):
     Aliyun OSS Storage
     """
 
-    def __init__(self, access_key_id=None, access_key_secret=None, end_point=None, bucket_name=None):
+    def __init__(self, access_key_id=None, access_key_secret=None,
+                 end_point=None, bucket_name=None):
         self.access_key_id = access_key_id if access_key_id else _get_config(
             'OSS_ACCESS_KEY_ID')
-        self.access_key_secret = access_key_secret if access_key_secret else _get_config(
-            'OSS_ACCESS_KEY_SECRET')
+        self.access_key_secret = access_key_secret if access_key_secret \
+            else _get_config(
+                'OSS_ACCESS_KEY_SECRET')
         self.end_point = _normalize_endpoint(
             end_point if end_point else _get_config('OSS_ENDPOINT'))
         self.bucket_name = bucket_name if bucket_name else _get_config(
@@ -106,7 +109,8 @@ class OssStorage(Storage):
             # Load the key into a temporary file
             tmpf = SpooledTemporaryFile(max_size=10*1024*1024)  # 10MB
             obj = self.bucket.get_object(target_name)
-            logger().info("content length: %d, requestid: %s", obj.content_length, obj.request_id)
+            logger().info("content length: %d, requestid: %s",
+                          obj.content_length, obj.request_id)
             if obj.content_length is None:
                 shutil.copyfileobj(obj, tmpf)
             else:
@@ -116,7 +120,7 @@ class OssStorage(Storage):
             return OssFile(tmpf, target_name, self)
         except oss2.exceptions.NoSuchKey:
             raise OssError("%s does not exist" % name)
-        except:
+        except Exception:
             raise OssError("Failed to open %s" % name)
 
     def _save(self, name, content):
@@ -137,8 +141,6 @@ class OssStorage(Storage):
         target_name = self._get_key_name(name)
         logger().debug("name: %s, target name: %s", name, target_name)
         if name.endswith("/"):
-            # This looks like a directory, but OSS has no concept of directories
-            # need to check whether the key starts with this prefix
             result = self.bucket.list_objects(
                 prefix=target_name, delimiter='', marker='', max_keys=1)
             if len(result.object_list) == 0:
@@ -150,7 +152,6 @@ class OssStorage(Storage):
         exist = self.bucket.object_exists(target_name)
         logger().debug("'%s' exist: %s", target_name, exist)
         if not exist:
-            # It's not a file, but it might be a directory. Check again that it's not a directory.
             name2 = name + "/"
             logger().debug("to check %s", name2)
             return self.exists(name2)
@@ -175,7 +176,8 @@ class OssStorage(Storage):
         file_meta = self.get_file_meta(name)
 
         if settings.USE_TZ:
-            return datetime.utcfromtimestamp(file_meta.last_modified).replace(tzinfo=utc)
+            return datetime.utcfromtimestamp(
+                file_meta.last_modified).replace(tzinfo=utc)
         else:
             return datetime.fromtimestamp(file_meta.last_modified)
 
@@ -214,14 +216,14 @@ class OssStorage(Storage):
     def delete(self, name):
         name = self._get_key_name(name)
         logger().debug("delete name: %s", name)
-        result = self.bucket.delete_object(name)
+        return self.bucket.delete_object(name)
 
     def delete_with_slash(self, dirname):
         name = self._get_key_name(dirname)
         if not name.endswith('/'):
             name += '/'
         logger().debug("delete name: %s", name)
-        result = self.bucket.delete_object(name)
+        return self.bucket.delete_object(name)
 
 
 class OssMediaStorage(OssStorage):
