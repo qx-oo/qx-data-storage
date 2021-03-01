@@ -49,6 +49,7 @@ class OssImageSerializerMixin():
         validated_data[image_field] = url
         return url
 
+<<<<<<< HEAD
     def get_upload_url(self, location, unique_id, file_type):
         ts = hex(int(time.time() * 10000000))[2:]
         obj_name = "upload/{}/{}-{}".format(
@@ -56,6 +57,14 @@ class OssImageSerializerMixin():
         try:
             ins = AutoOssStorage()
             upload_url = ins.sign_url('PUT', obj_name, file_type=file_type)
+=======
+    def get_upload_url(self, location, unique_id):
+        obj_name = "upload/{}/{}-{}".format(
+            location, int(time.time() * 1000), unique_id)
+        try:
+            ins = AutoOssStorage()
+            upload_url = ins.sign_url('PUT', obj_name)
+>>>>>>> fdeb60c... 添加oss授权上传图片
             url = ins.url(obj_name)
         except Exception:
             raise serializers.ValidationError("Get upload url error")
@@ -104,17 +113,25 @@ class UploadUrlSerializer(serializers.Serializer, OssImageSerializerMixin):
         label="访问链接", read_only=True)
     type = serializers.ChoiceField(
         list(callbacks.keys()))
+<<<<<<< HEAD
     file_type = serializers.ChoiceField(
         list(file_type_map.keys()))
+=======
+>>>>>>> fdeb60c... 添加oss授权上传图片
 
     def create(self, validated_data):
         name = validated_data['type']
         user = self.context['request'].user
+<<<<<<< HEAD
         file_type = validated_data['file_type']
         if not (file_type := file_type_map.get(file_type)):
             raise SerializerFieldError('file type error', 'file_type')
 
         upload_url, url = self.get_upload_url(name, user.id, file_type)
+=======
+
+        upload_url, url = self.get_upload_url(name, user.id)
+>>>>>>> fdeb60c... 添加oss授权上传图片
 
         validated_data['upload_url'] = upload_url
         validated_data['url'] = url
