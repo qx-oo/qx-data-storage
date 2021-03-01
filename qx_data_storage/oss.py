@@ -89,6 +89,7 @@ class AutoOssStorage():
         return self.OSS['DOMAIN'] + '/' + name
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def sign_url(self, method, obj_name: str, timeout: int = 60 * 5,
                  file_type='image/jpeg') -> str:
         headers = {
@@ -98,6 +99,9 @@ class AutoOssStorage():
             method, obj_name, timeout, headers=headers)
 =======
     def sign_url(self, method, obj_name: str, timeout: int = 60 * 1200) -> str:
+=======
+    def sign_url(self, method, obj_name: str, timeout: int = 60 * 5) -> str:
+>>>>>>> 4005a90... fix
         url = self.bucket.sign_url(method, obj_name, timeout)
 >>>>>>> fdeb60c... 添加oss授权上传图片
         return url
