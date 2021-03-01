@@ -88,7 +88,7 @@ class AutoOssStorage():
         self.bucket.put_object(name, data)
         return self.OSS['DOMAIN'] + '/' + name
 
-    def sign_url(self, method, obj_name: str, timeout: int = 60 * 1200) -> str:
+    def sign_url(self, method, obj_name: str, timeout: int = 60 * 5) -> str:
         url = self.bucket.sign_url(method, obj_name, timeout)
         return url
 
