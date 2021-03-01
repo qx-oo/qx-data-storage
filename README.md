@@ -53,4 +53,4 @@ Upload Image Model:
         image_field = 'image'
         name = 'star_image'
 
-    router.register('upload-img', UploadImageViewset, basename="upload_image")
+    router.register('storage', StorageViewset, basename="data-storage")

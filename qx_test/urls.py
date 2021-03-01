@@ -16,10 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from qx_data_storage.viewsets import UploadImageViewset
+from qx_data_storage.viewsets import StorageViewset
 
 router = DefaultRouter()
-router.register('upload-img', UploadImageViewset, basename="upload_image")
+router.register('storage', StorageViewset, basename="data_storage")
 
 urlpatterns = [
     path('', include(router.urls)),

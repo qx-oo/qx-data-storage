@@ -43,8 +43,19 @@ class OssImageSerializerMixin():
         validated_data[image_field] = url
         return url
 
+    def get_upload_url(self, location, unique_id):
+        obj_name = "upload/{}/{}-{}".format(
+            location, int(time.time() * 1000), unique_id)
+        try:
+            ins = AutoOssStorage()
+            upload_url = ins.sign_url('PUT', obj_name)
+            url = ins.url(obj_name)
+        except Exception:
+            raise serializers.ValidationError("Get upload url error")
+        return upload_url, url
 
-class UploadImageSerializer(serializers.Serializer, OssImageSerializerMixin):
+
+class StorageSerializer(serializers.Serializer, OssImageSerializerMixin):
 
     image = serializers.CharField(
         label="上传图片(base64)")
@@ -76,3 +87,23 @@ class UploadImageSerializer(serializers.Serializer, OssImageSerializerMixin):
             return validated_data
         else:
             raise SerializerFieldError(msg, 'image')
+
+
+class UploadUrlSerializer(serializers.Serializer, OssImageSerializerMixin):
+
+    upload_url = serializers.CharField(
+        label="上传链接", read_only=True)
+    url = serializers.CharField(
+        label="访问链接", read_only=True)
+    type = serializers.ChoiceField(
+        list(callbacks.keys()))
+
+    def create(self, validated_data):
+        name = validated_data['type']
+        user = self.context['request'].user
+
+        upload_url, url = self.get_upload_url(name, user.id)
+
+        validated_data['upload_url'] = upload_url
+        validated_data['url'] = url
+        return validated_data

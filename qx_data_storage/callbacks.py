@@ -1,3 +1,4 @@
+import typing
 from django.db.models.fields.files import FileDescriptor
 
 
@@ -16,14 +17,14 @@ class UploadImageCallbackMixin():
 
     location = "upload/image"
 
-    def validate(self) -> (bool, str):
+    def validate(self) -> typing.Tuple[bool, str]:
         """
         validate params
         return: status, error msg
         """
         raise NotImplementedError
 
-    def upload_image_callback(self, url) -> (bool, str):
+    def upload_image_callback(self, url) -> typing.Tuple[bool, str]:
         """
         Upload Image Callback
         return: status, error msg
@@ -53,7 +54,7 @@ class UploadModelImageCallbackMixin(UploadImageCallbackMixin):
 
     object_field = 'id'
 
-    def validate(self) -> (bool, str):
+    def validate(self) -> typing.Tuple[bool, str]:
         """
         validate params
         return: status, error msg
@@ -75,7 +76,7 @@ class UploadModelImageCallbackMixin(UploadImageCallbackMixin):
             return False, "instance lookup fail"
         return True, ''
 
-    def upload_image_callback(self, url) -> (bool, str):
+    def upload_image_callback(self, url) -> typing.Tuple[bool, str]:
         try:
             setattr(self.instance, self.image_field, url)
             self.instance.save()

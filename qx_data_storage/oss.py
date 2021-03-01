@@ -18,8 +18,8 @@ import six
 import oss2
 from urllib import parse
 from django.utils.encoding import force_text
-from .django_oss_storage.backends import OssStorage
 from django.conf import settings
+from .django_oss_storage.backends import OssStorage
 
 logger = logging.getLogger(__name__)
 
@@ -88,8 +88,9 @@ class AutoOssStorage():
         self.bucket.put_object(name, data)
         return self.OSS['DOMAIN'] + '/' + name
 
-    def sign_url(self, obj_name: str, timeout: int = 60) -> str:
-        url = self.bucket.sign_url('GET', '<yourObjectName>', timeout)
-        return {
-            'url': url
-        }
+    def sign_url(self, method, obj_name: str, timeout: int = 60 * 1200) -> str:
+        url = self.bucket.sign_url(method, obj_name, timeout)
+        return url
+
+    def url(self, obj_name):
+        return self.OSS['DOMAIN'] + '/' + obj_name

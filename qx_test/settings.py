@@ -124,8 +124,10 @@ STATIC_URL = '/static/'
 
 QX_DATA_STORAGE_SETTINGS = {
     "ALIYUN_OSS": {
-        "DOMAIN": "https://oss.qa.babily.com.cn",
+        "DOMAIN": "https://xxx.aliyuncs.com",
         "ENDPOINT": "oss-cn-shanghai.aliyuncs.com",
-        "BUCKET_NAME": "babily-test",
+        "BUCKET_NAME": "xxx",
+        "ACCESS_KEY_ID": "xxx",
+        "ACCESS_KEY_SECRET": "xxx",
     },
 }
