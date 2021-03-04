@@ -59,8 +59,9 @@ class OssImageSerializerMixin():
             upload_url = ins.sign_url('PUT', obj_name, file_type=file_type)
 =======
     def get_upload_url(self, location, unique_id):
+        ts = hex(int(time.time() * 10000000))[2:]
         obj_name = "upload/{}/{}-{}".format(
-            location, int(time.time() * 1000), unique_id)
+            location, ts, unique_id)
         try:
             ins = AutoOssStorage()
             upload_url = ins.sign_url('PUT', obj_name)
