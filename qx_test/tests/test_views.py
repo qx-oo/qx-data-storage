@@ -45,9 +45,13 @@ class TestView:
         data = {
             'type': 'star_image',
 <<<<<<< HEAD
+<<<<<<< HEAD
             'file_type': 'png',
 =======
 >>>>>>> fdeb60c... 添加oss授权上传图片
+=======
+            'file_type': 'png',
+>>>>>>> 8b51360... 更新文件上传类型
         }
         client, _ = self.user_login(client)
         resp = client.post(
@@ -59,12 +63,18 @@ class TestView:
         assert url
         img = open("qx_test/tests/test.png", 'rb').read()
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8b51360... 更新文件上传类型
         headers = {
             'Content-Type': 'image/png',
         }
         resp = requests.put(upload_url, data=img, headers=headers)
+<<<<<<< HEAD
 =======
         resp = requests.put(upload_url, data=img)
 >>>>>>> fdeb60c... 添加oss授权上传图片
+=======
+>>>>>>> 8b51360... 更新文件上传类型
         print(resp)
         assert resp.status_code == 200
