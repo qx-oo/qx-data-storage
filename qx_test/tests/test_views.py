@@ -44,6 +44,7 @@ class TestView:
         url = '/storage/upload-url/'
         data = {
             'type': 'star_image',
+            'file_type': 'png',
         }
         client, _ = self.user_login(client)
         resp = client.post(
@@ -54,6 +55,9 @@ class TestView:
         url = ret['data']['url']
         assert url
         img = open("qx_test/tests/test.png", 'rb').read()
-        resp = requests.put(upload_url, data=img)
+        headers = {
+            'Content-Type': 'image/png',
+        }
+        resp = requests.put(upload_url, data=img, headers=headers)
         print(resp)
         assert resp.status_code == 200
