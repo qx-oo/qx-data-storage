@@ -20,9 +20,6 @@ settings.py:
     ]
 
 
-    ALIYUN_ACCESS_KEY_ID = 'xxx'
-    ALIYUN_ACCESS_KEY_SECRET = 'xxx'
-
     QX_DATA_STORAGE_SETTINGS = {
         "ALIYUN_OSS": {
             "DOMAIN": "https://oss.xxx.com.cn",
