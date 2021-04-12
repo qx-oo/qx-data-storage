@@ -9,7 +9,7 @@ from .callbacks import callbacks
 
 file_type_map = {
     'png': 'image/png',
-    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
 }
 
 
