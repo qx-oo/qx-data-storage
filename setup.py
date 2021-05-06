@@ -15,6 +15,6 @@ setup(
         'pillow>=8.0.0',
         'Django >= 2.2',
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     platforms='any',
 )
