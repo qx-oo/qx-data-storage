@@ -1,3 +1,4 @@
+import traceback
 import time
 import base64
 import binascii
@@ -28,6 +29,7 @@ class OssImageSerializerMixin():
         try:
             url = AutoOssStorage().put_bytes(obj_name, file_obj)
         except Exception:
+            traceback.print_exc()
             raise SerializerFieldError("上传失败", 'image')
         return url
 
@@ -45,6 +47,7 @@ class OssImageSerializerMixin():
         try:
             url = self.push_image(obj_name, file_obj)
         except Exception:
+            traceback.print_exc()
             raise serializers.ValidationError("push oss fail")
         validated_data[image_field] = url
         return url
@@ -58,6 +61,7 @@ class OssImageSerializerMixin():
             upload_url = ins.sign_url('PUT', obj_name, file_type=file_type)
             url = ins.url(obj_name)
         except Exception:
+            traceback.print_exc()
             raise serializers.ValidationError("Get upload url error")
         return upload_url, url
 
