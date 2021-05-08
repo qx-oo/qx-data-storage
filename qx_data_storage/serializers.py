@@ -118,7 +118,10 @@ class UploadUrlSerializer(serializers.Serializer, OssImageSerializerMixin):
         if not (file_type := file_type_map.get(file_type)):
             raise SerializerFieldError('file type error', 'file_type')
 
-        upload_url, url = self.get_upload_url(name, user.id, file_type)
+        instance = callbacks[name](user=user)
+        location = instance.location.strip('/')
+
+        upload_url, url = self.get_upload_url(location, user.id, file_type)
 
         validated_data['upload_url'] = upload_url
         validated_data['url'] = url
