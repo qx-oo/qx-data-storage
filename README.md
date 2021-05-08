@@ -50,4 +50,10 @@ Upload Image Model:
         image_field = 'image'
         name = 'star_image'
 
-    router.register('storage', StorageViewset, basename="data-storage")
+urls.py:
+
+    urlpatterns = [
+        ...
+        path('upload/', include('qx_data_storage.urls')),
+        ...
+    ]
