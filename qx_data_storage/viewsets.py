@@ -3,7 +3,7 @@ from rest_framework.permissions import (
     IsAuthenticated,
 )
 from rest_framework.decorators import action
-from qx_base.qx_rest.response import ApiResponse
+from django.http import JsonResponse
 from .serializers import StorageSerializer, UploadUrlSerializer
 
 
@@ -28,6 +28,9 @@ class StorageViewset(viewsets.GenericViewSet,):
 
     serializer_class = StorageSerializer
 
+    def get_response(self, data):
+        return JsonResponse(data=data)
+
     def get_serializer_class(self):
         if self.action == 'upload_url':
             return UploadUrlSerializer
@@ -37,11 +40,11 @@ class StorageViewset(viewsets.GenericViewSet,):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         ret = serializer.save()
-        return ApiResponse(data=ret)
+        return self.get_response(data=ret)
 
     @action(methods=['post'], url_path='upload-url', detail=False)
     def upload_url(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         ret = serializer.save()
-        return ApiResponse(data=ret)
+        return self.get_response(data=ret)

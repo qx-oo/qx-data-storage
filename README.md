@@ -7,10 +7,6 @@ my django project data storage module
 
 ### Usage:
 
-depends:
-
-    qx-base >= 1.0.8
-
 settings.py:
 
     INSTALLED_APPS = [

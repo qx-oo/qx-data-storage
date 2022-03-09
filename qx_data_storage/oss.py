@@ -14,7 +14,7 @@ import os
 import six
 import oss2
 from urllib import parse
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.conf import settings
 from .django_oss_storage.backends import OssStorage
 
@@ -56,7 +56,7 @@ class BackendOssStorage(OssStorage):
         return "/" + self._get_key_name(name)
 
     def _get_key_name(self, name):
-        base_path = force_text(self.location)
+        base_path = force_str(self.location)
         if name.startswith(base_path):
             return name
         final_path = parse.urljoin(base_path + "/", name)

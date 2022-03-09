@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='qx-data-storage',
-    version='1.0.3',
+    version='1.0.4',
     author='Shawn',
     author_email='q-x64@live.com',
     url='https://github.com/qx-oo/qx-data-storage/',
@@ -13,8 +13,8 @@ setup(
     install_requires=[
         'oss2==2.7.0',
         'pillow>=8.0.0',
-        'Django >= 2.2',
+        'Django >= 4.0',
     ],
-    python_requires='>=3.8',
+    python_requires='>=3.9',
     platforms='any',
 )

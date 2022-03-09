@@ -3,7 +3,6 @@ import time
 import base64
 import binascii
 from rest_framework import serializers
-from qx_base.qx_rest.exceptions import SerializerFieldError
 from .oss import AutoOssStorage
 from .callbacks import callbacks
 
@@ -30,7 +29,7 @@ class OssImageSerializerMixin():
             url = AutoOssStorage().put_bytes(obj_name, file_obj)
         except Exception:
             traceback.print_exc()
-            raise SerializerFieldError("上传失败", 'image')
+            raise serializers.ValidationError("上传失败")
         return url
 
     def set_image(self, validated_data, image_field, unique_id):
@@ -83,7 +82,7 @@ class StorageSerializer(serializers.Serializer, OssImageSerializerMixin):
         instance = callbacks[name](user=user, callback_params=callback_params)
         status, msg = instance.validate()
         if not status:
-            raise SerializerFieldError(msg, 'callback_params')
+            raise serializers.ValidationError(msg)
 
         file_obj = self.parse_image(validated_data, 'image')
 
@@ -97,7 +96,7 @@ class StorageSerializer(serializers.Serializer, OssImageSerializerMixin):
             validated_data['image'] = url
             return validated_data
         else:
-            raise SerializerFieldError(msg, 'image')
+            raise serializers.ValidationError(msg)
 
 
 class UploadUrlSerializer(serializers.Serializer, OssImageSerializerMixin):
@@ -116,7 +115,7 @@ class UploadUrlSerializer(serializers.Serializer, OssImageSerializerMixin):
         user = self.context['request'].user
         file_type = validated_data['file_type']
         if not (file_type := file_type_map.get(file_type)):
-            raise SerializerFieldError('file type error', 'file_type')
+            raise serializers.ValidationError("file type error")
 
         instance = callbacks[name](user=user)
         location = instance.location.strip('/')
