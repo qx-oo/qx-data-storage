@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='qx-data-storage',
-    version='1.0.4',
+    version='1.0.5',
     author='Shawn',
     author_email='q-x64@live.com',
     url='https://github.com/qx-oo/qx-data-storage/',

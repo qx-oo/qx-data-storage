@@ -82,6 +82,7 @@ class AutoOssStorage():
             bucket_name)
 
     def put_bytes(self, name: str, data: bytes) -> str:
+        name = name.lstrip('/')
         self.bucket.put_object(name, data)
         return self.OSS['DOMAIN'] + '/' + name
 
@@ -95,4 +96,5 @@ class AutoOssStorage():
         return url
 
     def url(self, obj_name):
+        name = obj_name.lstrip('/')
         return self.OSS['DOMAIN'] + '/' + obj_name
