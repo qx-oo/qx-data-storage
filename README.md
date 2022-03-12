@@ -21,6 +21,8 @@ settings.py:
             "DOMAIN": "https://oss.xxx.com.cn",
             "ENDPOINT": "oss-cn-shanghai.aliyuncs.com",
             "BUCKET_NAME": "xxx",
+            "ACCESS_KEY_ID": ALIYUN_ACCESS_KEY_ID,
+            "ACCESS_KEY_SECRET": ALIYUN_ACCESS_KEY_SECRET,
         },
     }
 
