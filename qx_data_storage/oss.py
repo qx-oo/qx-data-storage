@@ -97,4 +97,4 @@ class AutoOssStorage():
 
     def url(self, obj_name):
         name = obj_name.lstrip('/')
-        return self.OSS['DOMAIN'] + '/' + obj_name
+        return self.OSS['DOMAIN'] + '/' + name
