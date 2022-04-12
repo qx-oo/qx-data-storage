@@ -4,7 +4,7 @@ import base64
 import binascii
 from rest_framework import serializers
 from .oss import AutoOssStorage
-from .callbacks import callbacks
+from .callbacks import callbacks, uploadurl_map
 
 
 file_type_map = {
@@ -106,7 +106,7 @@ class UploadUrlSerializer(serializers.Serializer, OssImageSerializerMixin):
     url = serializers.CharField(
         label="访问链接", read_only=True)
     type = serializers.ChoiceField(
-        list(callbacks.keys()))
+        list(uploadurl_map.keys()))
     file_type = serializers.ChoiceField(
         list(file_type_map.keys()))
 
@@ -117,8 +117,8 @@ class UploadUrlSerializer(serializers.Serializer, OssImageSerializerMixin):
         if not (file_type := file_type_map.get(file_type)):
             raise serializers.ValidationError("file type error")
 
-        instance = callbacks[name](user=user)
-        location = instance.location.strip('/')
+        cls = uploadurl_map[name]
+        location = cls._upload_location.strip('/')
 
         upload_url, url = self.get_upload_url(location, user.id, file_type)
 
